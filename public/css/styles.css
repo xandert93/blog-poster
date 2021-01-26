@@ -15,12 +15,17 @@
   color: #1abc9c !important;
 }
 
+body {
+  padding: 0 60px;
+}
+
 .footer-padding {
   padding-bottom: 60px;
 }
 
 .footer {
   position: fixed;
+  left: 0;
   text-align: center;
   bottom: 0;
   width: 100%;

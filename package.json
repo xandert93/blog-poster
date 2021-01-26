@@ -1,10 +1,13 @@
 {
   "name": "blog-poster",
+  "homepage": "https://arun13sl.github.io/blog-poster",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "author": "",
   "license": "ISC",
@@ -12,6 +15,8 @@
     "body-parser": "^1.18.3",
     "ejs": "^2.6.1",
     "express": "^4.16.3",
-    "lodash": "^4.17.20"
+    "gh-pages": "^3.1.0",
+    "lodash": "^4.17.20",
+    "mongoose": "^5.11.13"
   }
 }

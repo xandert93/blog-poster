@@ -1,4 +1,8 @@
-//jshint esversion:6
+const { Schema, model, connect } = require('mongoose');
+connect(
+  'mongodb+srv://admin-xander:banana123@cluster0.lohvw.mongodb.net/blogDB',
+  { useNewUrlParser: true, useUnifiedTopology: true }
+);
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -17,10 +21,24 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
-let posts = [];
+const BlogPost = model(
+  'BlogPost',
+  new Schema({
+    postTitle: {
+      type: String,
+      required: [1, 'Please ensure your Blog Post has a title.'],
+    },
+    postBody: {
+      type: String,
+      required: [1, 'Please ensure your Blog Post has a body.'],
+    },
+  })
+);
 
 app.get('/', (req, res) => {
-  res.render('home', { homeStartingContent, posts });
+  BlogPost.find({}, (err, posts) =>
+    res.render('home', { homeStartingContent, posts })
+  );
 });
 app.get('/about', (req, res) => {
   res.render('about', { aboutContent });
@@ -32,22 +50,20 @@ app.get('/compose', (req, res) => {
   res.render('compose');
 });
 app.get('/posts/:slug', (req, res) => {
-  let slug = _.lowerCase(req.params.slug);
-  posts.forEach(({ postTitle, postBody }) => {
-    console.log('1');
-    slug === _.lowerCase(postTitle) &&
-      res.render('post', { postTitle, postBody });
+  let slug = req.params.slug;
+
+  BlogPost.findById(slug, (err, post) => {
+    let { postTitle, postBody, _id } = post;
+    res.render('post', { postTitle, postBody, _id });
   });
 });
 
 app.post('/', (req, res) => {
   let { postTitle, postBody } = req.body;
-  let post;
-  if (postTitle && postBody) {
-    post = { postTitle, postBody };
-    posts.push(post);
-  }
-  res.redirect('/');
+  if (postTitle && postBody)
+    new BlogPost({ postTitle, postBody }).save(
+      (err, result) => !err && res.redirect('/')
+    );
 });
 
 app.listen(3000, function () {

@@ -4,9 +4,9 @@
 
 <p><%= homeStartingContent %></p>
 
-<% posts.forEach(({postTitle, postBody}) => { %>
-<div>
+<% posts.forEach(({postTitle, postBody, _id}) => { %>
+<div class="post">
   <h1><%= postTitle %></h1>
-  <p><%= postBody.substring(0,100).concat("...") %> <a href=<%= `/posts/${postTitle}` %> >Read more</a></p>
+  <p><%= postBody.substring(0,100).concat("...") %> <a href=<%= `/posts/${_id}` %> >Read more</a></p>
 </div>
 <% }) %> <%- include("partials/footer") -%>
